@@ -1,0 +1,32 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: n8n
+  namespace: n8n
+spec:
+  replicas: 1
+  selector: { matchLabels: { app: n8n } }
+  template:
+    metadata: { labels: { app: n8n } }
+    spec:
+      containers:
+        - name: n8n
+          image: n8nio/n8n:latest
+          ports: [{ containerPort: 5678 }]
+          resources:
+            requests:
+              cpu: 100m
+              memory: 256Mi
+            limits:
+              cpu: 500m
+              memory: 1Gi
+          env:
+            - name: N8N_HOST
+              value: n8n.sidmakes.com
+            - name: N8N_PORT
+              value: "5678"
+            - name: N8N_PROTOCOL
+              value: https
+            - name: NODE_ENV
+              value: production
+

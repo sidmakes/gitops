@@ -5,9 +5,9 @@ metadata:
   namespace: n8n
   annotations:
     kubernetes.io/ingress.class: traefik
-    traefik.ingress.kubernetes.io/router.entrypoints: websecure
+    traefik.ingress.kubernetes.io/router.entrypoints: web,websecure
     traefik.ingress.kubernetes.io/router.tls: "true"
-    traefik.ingress.kubernetes.io/router.tls.certresolver: le
+    traefik.ingress.kubernetes.io/router.tls.certresolver: "le"
 spec:
   ingressClassName: traefik
   rules:
@@ -21,3 +21,6 @@ spec:
                 name: n8n
                 port:
                   number: 5678
+  tls:
+    - hosts: [n8n.sidmakes.com]
+      secretName: n8n-tls
