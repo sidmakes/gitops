@@ -27,6 +27,14 @@ spec:
               value: "5678"
             - name: N8N_PROTOCOL
               value: https
+            - name: N8N_EDITOR_BASE_URL
+              value: https://n8n.sidmakes.com/
+            - name: WEBHOOK_URL
+              value: https://n8n.sidmakes.com/
+            - name: N8N_RUNNERS_ENABLED
+              value: "true"
+            - name: N8N_ENFORCE_SETTINGS_FILE_PERMISSIONS
+              value: "true"
             - name: NODE_ENV
               value: production
 
