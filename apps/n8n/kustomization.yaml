@@ -1,5 +1,4 @@
 apiVersion: kustomize.config.k8s.io/v1beta1
 kind: Kustomization
 resources:
-  - applications/whoami.yaml
-  - applications/n8n.yaml
+  - ingress.yaml
