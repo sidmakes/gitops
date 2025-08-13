@@ -10,7 +10,7 @@ metadata:
     traefik.ingress.kubernetes.io/router.tls.certresolver: "le"
 spec:
   rules:
-    - host: whoami.k3s.sidmakes.com
+    - host: whoami.sidmakes.com
       http:
         paths:
           - path: /
@@ -21,5 +21,5 @@ spec:
                 port:
                   number: 80
   tls:
-    - hosts: [whoami.k3s.sidmakes.com]
+    - hosts: [whoami.sidmakes.com]
       secretName: whoami-tls
