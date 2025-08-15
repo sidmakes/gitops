@@ -3,3 +3,6 @@ kind: Kustomization
 resources:
   - applications/whoami.yaml
   - applications/n8n.yaml
+  - applications/cert-manager.yaml
+  - applications/cluster-issuer.yaml
+  - applications/external-dns.yaml
