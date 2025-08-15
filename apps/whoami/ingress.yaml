@@ -5,11 +5,12 @@ metadata:
   namespace: whoami
   annotations:
     kubernetes.io/ingress.class: traefik
+    external-dns.alpha.kubernetes.io/enabled: "true"
     external-dns.alpha.kubernetes.io/target: k3s.sidmakes.com
     traefik.ingress.kubernetes.io/router.entrypoints: web,websecure
-    traefik.ingress.kubernetes.io/router.tls: "true"
-    traefik.ingress.kubernetes.io/router.tls.certresolver: "le"
+    cert-manager.io/cluster-issuer: letsencrypt-prod
 spec:
+  ingressClassName: traefik
   rules:
     - host: whoami.sidmakes.com
       http:
