@@ -6,3 +6,4 @@ resources:
   - applications/cert-manager.yaml
   - applications/cluster-issuer.yaml
   - applications/external-dns.yaml
+  - applications/aws-ebs-csi-driver.yaml
