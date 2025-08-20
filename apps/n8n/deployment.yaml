@@ -37,4 +37,31 @@ spec:
               value: "true"
             - name: NODE_ENV
               value: production
+            - name: DB_TYPE
+              value: postgresdb
+            - name: DB_POSTGRESDB_DATABASE
+              value: n8n
+          envFrom:
+            - secretRef:
+                name: rds-postgres
+      initContainers:
+        - name: init-create-n8n-db
+          image: postgres:16-alpine
+          envFrom:
+            - secretRef:
+                name: rds-postgres
+          env:
+            - name: PGPASSWORD
+              valueFrom:
+                secretKeyRef:
+                  name: rds-postgres
+                  key: DB_POSTGRESDB_PASSWORD
+            - name: PGSSLMODE
+              value: require
+          command: ["/bin/sh","-c"]
+          args:
+            - |
+              set -euo pipefail
+              psql -h "$DB_POSTGRESDB_HOST" -p "$DB_POSTGRESDB_PORT" -U "$DB_POSTGRESDB_USER" -d postgres -v ON_ERROR_STOP=1 \
+                -c "SELECT 'CREATE DATABASE n8n' WHERE NOT EXISTS (SELECT FROM pg_database WHERE datname = 'n8n')\\gexec"
 
