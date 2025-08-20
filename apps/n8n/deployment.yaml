@@ -9,9 +9,15 @@ spec:
   template:
     metadata: { labels: { app: n8n } }
     spec:
+      securityContext:
+        fsGroup: 1000
+        fsGroupChangePolicy: OnRootMismatch
       containers:
         - name: n8n
           image: n8nio/n8n:latest
+          securityContext:
+            runAsUser: 1000
+            runAsGroup: 1000
           ports: [{ containerPort: 5678 }]
           resources:
             requests:
@@ -41,9 +47,16 @@ spec:
               value: postgresdb
             - name: DB_POSTGRESDB_DATABASE
               value: n8n
+            - name: DB_POSTGRESDB_SSL_ENABLED
+              value: "true"
+            - name: DB_POSTGRESDB_SSL_REJECT_UNAUTHORIZED
+              value: "false"
           envFrom:
             - secretRef:
                 name: rds-postgres
+            - secretRef:
+                name: n8n-config
+                optional: true
       initContainers:
         - name: init-create-n8n-db
           image: postgres:16-alpine
