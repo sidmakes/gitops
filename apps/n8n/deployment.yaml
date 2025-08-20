@@ -62,6 +62,8 @@ spec:
           args:
             - |
               set -euo pipefail
-              psql -h "$DB_POSTGRESDB_HOST" -p "$DB_POSTGRESDB_PORT" -U "$DB_POSTGRESDB_USER" -d postgres -v ON_ERROR_STOP=1 \
-                -c "SELECT 'CREATE DATABASE n8n' WHERE NOT EXISTS (SELECT FROM pg_database WHERE datname = 'n8n')\\gexec"
+              # Create database if it does not exist
+              if ! psql -h "$DB_POSTGRESDB_HOST" -p "$DB_POSTGRESDB_PORT" -U "$DB_POSTGRESDB_USER" -d postgres -tAc "SELECT 1 FROM pg_database WHERE datname = 'n8n'" | grep -q 1; then
+                psql -h "$DB_POSTGRESDB_HOST" -p "$DB_POSTGRESDB_PORT" -U "$DB_POSTGRESDB_USER" -d postgres -v ON_ERROR_STOP=1 -c "CREATE DATABASE n8n"
+              fi
 
