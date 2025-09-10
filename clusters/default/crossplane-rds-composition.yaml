@@ -1,0 +1,88 @@
+apiVersion: apiextensions.crossplane.io/v1
+kind: CompositeResourceDefinition
+metadata:
+  name: xpostgreses.aws.platform.sidmakes.com
+  annotations:
+    argocd.argoproj.io/sync-wave: "3"
+spec:
+  group: aws.platform.sidmakes.com
+  names:
+    kind: XPostgres
+    plural: xpostgreses
+  claimNames:
+    kind: PostgresInstance
+    plural: postgresinstances
+  versions:
+    - name: v1alpha1
+      served: true
+      referenceable: true
+      schema:
+        openAPIV3Schema:
+          type: object
+          properties:
+            spec:
+              type: object
+              properties:
+                parameters:
+                  type: object
+                  properties:
+                    dbSubnetGroupName:
+                      type: string
+                    vpcSecurityGroupIDs:
+                      type: array
+                      items:
+                        type: string
+                    instanceClass:
+                      type: string
+                      default: db.t3.micro
+                    storageGiB:
+                      type: integer
+                      default: 20
+                    engineVersion:
+                      type: string
+                      default: "15"
+                    publiclyAccessible:
+                      type: boolean
+                      default: false
+                  required: [dbSubnetGroupName]
+              required: [parameters]
+---
+apiVersion: apiextensions.crossplane.io/v1
+kind: Composition
+metadata:
+  name: xpostgres.standard
+  annotations:
+    argocd.argoproj.io/sync-wave: "3"
+spec:
+  compositeTypeRef:
+    apiVersion: aws.platform.sidmakes.com/v1alpha1
+    kind: XPostgres
+  resources:
+    - name: instance
+      base:
+        apiVersion: database.aws.crossplane.io/v1beta1
+        kind: DBInstance
+        spec:
+          forProvider:
+            region: us-east-2
+            engine: postgres
+            dbInstanceClass: db.t3.micro
+            allocatedStorage: 20
+            publiclyAccessible: false
+          providerConfigRef:
+            name: default
+      patches:
+        - fromFieldPath: spec.parameters.dbSubnetGroupName
+          toFieldPath: spec.forProvider.dbSubnetGroupName
+        - fromFieldPath: spec.parameters.vpcSecurityGroupIDs
+          toFieldPath: spec.forProvider.vpcSecurityGroupIDs
+        - fromFieldPath: spec.parameters.instanceClass
+          toFieldPath: spec.forProvider.dbInstanceClass
+        - fromFieldPath: spec.parameters.storageGiB
+          toFieldPath: spec.forProvider.allocatedStorage
+        - fromFieldPath: spec.parameters.engineVersion
+          toFieldPath: spec.forProvider.engineVersion
+        - fromFieldPath: spec.parameters.publiclyAccessible
+          toFieldPath: spec.forProvider.publiclyAccessible
+
+

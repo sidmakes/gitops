@@ -1,0 +1,18 @@
+apiVersion: aws.platform.sidmakes.com/v1alpha1
+kind: PostgresInstance
+metadata:
+  name: dev-postgres
+  annotations:
+    argocd.argoproj.io/sync-wave: "4"
+spec:
+  compositionRef:
+    name: xpostgres.standard
+  parameters:
+    dbSubnetGroupName: ${DB_SUBNET_GROUP}
+    vpcSecurityGroupIDs: []
+    instanceClass: db.t3.micro
+    storageGiB: 20
+    engineVersion: "15"
+    publiclyAccessible: false
+
+
