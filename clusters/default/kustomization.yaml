@@ -2,3 +2,9 @@ apiVersion: kustomize.config.k8s.io/v1beta1
 kind: Kustomization
 resources:
   - namespaces/demo.yaml
+  - crossplane-app.yaml
+  - crossplane-provider-aws.yaml
+  - crossplane-providerconfig-aws.yaml
+  - crossplane-provider-runtimeconfig.yaml
+  - crossplane-rds-composition.yaml
+  - crossplane-rds-claim-dev.yaml
