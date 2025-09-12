@@ -1,0 +1,30 @@
+apiVersion: networking.k8s.io/v1
+kind: Ingress
+metadata:
+  name: n8n
+  namespace: n8n
+  labels:
+    app.kubernetes.io/name: n8n
+    app.kubernetes.io/instance: n8n
+    app.kubernetes.io/component: ingress
+  annotations:
+    # ALB terminates SSL and forwards headers, so we need to trust forwarded headers
+    nginx.ingress.kubernetes.io/use-forwarded-headers: "true"
+    # Since ALB handles SSL termination, disable SSL redirect at nginx level
+    nginx.ingress.kubernetes.io/ssl-redirect: "false"
+    # Ensure proper forwarded proto handling
+    nginx.ingress.kubernetes.io/proxy-redirect-from: "http://"
+    nginx.ingress.kubernetes.io/proxy-redirect-to: "https://"
+spec:
+  ingressClassName: nginx
+  rules:
+  - host: n8n.sidmakes.com
+    http:
+      paths:
+      - path: /
+        pathType: Prefix
+        backend:
+          service:
+            name: n8n
+            port:
+              number: 80
