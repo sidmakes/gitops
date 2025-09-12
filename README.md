@@ -11,7 +11,7 @@ This repository contains Kubernetes manifests for deploying n8n workflow automat
 │       └── overlays/
 │           └── production/    # Production-specific configuration
 ├── clusters/
-│   └── production/
+│   └── default/
 │       └── kustomization.yaml # Root kustomization for the cluster
 └── infrastructure/
     └── namespaces/            # Namespace definitions
@@ -20,7 +20,7 @@ This repository contains Kubernetes manifests for deploying n8n workflow automat
 ## Deployment
 
 Point your GitOps tool (ArgoCD, Flux, etc.) to:
-- **Path**: `clusters/production`
+- **Path**: `clusters/default`
 - **Branch**: `main`
 
 ## Components
