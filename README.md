@@ -21,9 +21,9 @@ Terraform (Bootstrap) → ArgoCD → GitOps Applications
 
 1. **Terraform Bootstrap** (one-time):
    ```bash
-   # Deploy ArgoCD + create root application
-   cd live/space/us-east-2/k8s-argocd && terragrunt apply
-   cd live/space/us-east-2/k8s-argocd-app && terragrunt apply
+   # Deploy ArgoCD platform + create root application
+   cd live/space/us-east-2/argocd-platform && terragrunt apply
+   cd live/space/us-east-2/argocd-bootstrap && terragrunt apply
    ```
 
 2. **GitOps Takes Over**:

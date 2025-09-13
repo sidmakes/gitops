@@ -75,8 +75,8 @@ This repository contains all Kubernetes application manifests managed by ArgoCD 
 
 1. **Bootstrap** (Terraform - one time)
    ```bash
-   terragrunt apply  # k8s-argocd 
-   terragrunt apply  # k8s-argocd-app
+   terragrunt apply  # argocd-platform
+   terragrunt apply  # argocd-bootstrap
    ```
 
 2. **GitOps** (Automatic)
