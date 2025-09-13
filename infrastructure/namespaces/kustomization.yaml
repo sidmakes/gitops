@@ -6,3 +6,5 @@ metadata:
 
 resources:
   - n8n-namespace.yaml
+  - monitoring-namespace.yaml
+  # argocd namespace created by Terraform bootstrap

@@ -8,9 +8,12 @@ resources:
   # Infrastructure
   - ../../infrastructure/namespaces
   
-  # Applications
+  # Applications  
   - ../../apps/ingress-nginx/overlays/production
+  - ../../apps/prometheus/overlays/production
   - ../../apps/n8n/overlays/production
+  
+  # Note: ArgoCD is managed by Terraform bootstrap, not GitOps (cleaner separation)
 
 commonLabels:
   cluster: default
