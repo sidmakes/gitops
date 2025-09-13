@@ -7,6 +7,8 @@ metadata:
     app.kubernetes.io/name: n8n
     app.kubernetes.io/instance: n8n
     app.kubernetes.io/component: ingress
+    app.kubernetes.io/managed-by: gitops
+    environment: production
   annotations:
     # ALB terminates SSL and forwards headers, so we need to trust forwarded headers
     nginx.ingress.kubernetes.io/use-forwarded-headers: "true"

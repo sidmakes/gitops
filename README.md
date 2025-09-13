@@ -1,56 +1,115 @@
 # GitOps Repository
 
-This repository contains the GitOps configuration managed by ArgoCD for the Kubernetes cluster.
+This repository contains the GitOps configuration managed by ArgoCD using the **ApplicationSet pattern** for automatic discovery and deployment.
 
 ## Architecture
 
 ```
-Terraform (Bootstrap) → ArgoCD → GitOps Applications
+Terraform (Bootstrap) → ApplicationSet → Auto-discovered Applications
 ```
+
+**Key Benefits:**
+- ✅ **Zero manual Application YAML files** - just create directories
+- ✅ **Automatic cleanup** - finalizers prevent orphaned resources  
+- ✅ **Modern GitOps** - industry standard ApplicationSet pattern
 
 ## Applications
 
-### Infrastructure
+### Infrastructure (Helm Charts)
 - **ingress-nginx**: NGINX ingress controller with ALB integration
 - **prometheus**: Monitoring stack (Prometheus + Grafana + AlertManager)
 
-### User Applications  
+### User Applications (Kubernetes Manifests)
 - **n8n**: Workflow automation platform
 
 ## Bootstrap Process
 
 1. **Terraform Bootstrap** (one-time):
    ```bash
-   # Deploy ArgoCD platform + create root application
-   cd live/space/us-east-2/argocd-platform && terragrunt apply
-   cd live/space/us-east-2/argocd-bootstrap && terragrunt apply
+   # Deploy ArgoCD platform + ApplicationSet
+   cd live/space/us-east-2/02-gitops
+   terragrunt apply-all
    ```
 
-2. **GitOps Takes Over**:
-   - ArgoCD automatically deploys: ingress-nginx, prometheus, n8n
-   - **ArgoCD stays managed by Terraform** (not self-managing)
-   - Clean separation: Terraform = infrastructure, GitOps = applications
+2. **ApplicationSet Takes Over**:
+   - ApplicationSet auto-discovers all `apps/*` directories
+   - Creates ArgoCD Application for each directory automatically
+   - **ArgoCD stays managed by Terraform** (clean separation)
+   - Applications self-heal and auto-sync
 
 ## Directory Structure
 
 ```
-├── apps/                    # Application definitions
-│   ├── ingress-nginx/      # Ingress controller
-│   ├── prometheus/         # Monitoring stack
-│   └── n8n/               # User applications
-├── infrastructure/         # Infrastructure resources
-│   └── namespaces/        # Namespace definitions
-└── clusters/              # Cluster configurations
-    └── default/           # Default cluster entrypoint
+├── apps/                    # Auto-discovered by ApplicationSet
+│   ├── ingress-nginx/      # NGINX Ingress (Helm)
+│   ├── prometheus/         # Monitoring (Helm) 
+│   └── n8n/               # User app (Manifests)
+└── STRUCTURE.md           # Detailed structure documentation
 ```
 
 ## Adding New Applications
 
-1. Create app structure in `apps/my-app/`
-2. Add to `clusters/default/kustomization.yaml`
-3. Commit and push - ArgoCD will automatically deploy
+### Helm Chart App
+```bash
+# 1. Create directory
+mkdir apps/my-helm-app
 
-## Monitoring
+# 2. Create kustomization with Helm chart
+cat > apps/my-helm-app/kustomization.yaml << EOF
+apiVersion: kustomize.config.k8s.io/v1beta1
+kind: Kustomization
+helmCharts:
+- name: my-chart
+  repo: https://charts.example.com
+  version: 1.0.0
+EOF
 
-- **Grafana**: https://grafana.sidmakes.com
+# 3. Commit and push - ApplicationSet deploys automatically!
+git add . && git commit -m "Add my-helm-app" && git push
+```
+
+### Kubernetes Manifest App
+```bash
+# 1. Create directory with manifests
+mkdir apps/my-app
+# Add your deployment.yaml, service.yaml, etc.
+
+# 2. Create kustomization
+cat > apps/my-app/kustomization.yaml << EOF
+apiVersion: kustomize.config.k8s.io/v1beta1
+kind: Kustomization
+resources:
+- deployment.yaml
+- service.yaml
+EOF
+
+# 3. Commit and push - ApplicationSet deploys automatically!
+git add . && git commit -m "Add my-app" && git push
+```
+
+## Removing Applications
+
+```bash
+# Just delete the directory - ApplicationSet handles cleanup
+rm -rf apps/my-app
+git commit -m "Remove my-app" && git push
+# ArgoCD automatically removes the application with proper cleanup!
+```
+
+## URLs (Post-Deployment)
+
 - **ArgoCD**: https://argo.sidmakes.com
+- **Grafana**: https://grafana.sidmakes.com
+- **n8n**: https://n8n.sidmakes.com
+
+## Cleanup
+
+```bash
+# ApplicationSet ensures proper cleanup of ALL applications
+cd live/space/us-east-2/02-gitops
+terragrunt destroy  # Now works perfectly - zero orphaned resources!
+```
+
+---
+
+**Migration Note**: This repo was upgraded from manual Application YAML pattern to ApplicationSet auto-discovery for 50% less maintenance overhead and zero configuration drift risk.

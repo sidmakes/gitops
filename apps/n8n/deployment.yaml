@@ -7,6 +7,8 @@ metadata:
     app.kubernetes.io/name: n8n
     app.kubernetes.io/instance: n8n
     app.kubernetes.io/component: application
+    app.kubernetes.io/managed-by: gitops
+    environment: production
 spec:
   replicas: 1
   selector:
@@ -18,6 +20,7 @@ spec:
       labels:
         app.kubernetes.io/name: n8n
         app.kubernetes.io/instance: n8n
+        environment: production
     spec:
       containers:
       - name: n8n
@@ -28,44 +31,40 @@ spec:
           protocol: TCP
         env:
         - name: N8N_HOST
-          value: "0.0.0.0"
+          value: n8n.sidmakes.com
+        - name: N8N_PROTOCOL
+          value: https
         - name: N8N_PORT
           value: "5678"
-        - name: N8N_PROTOCOL
-          value: "https"
-        - name: N8N_HOST_NAME
-          value: "n8n.sidmakes.com"
         - name: WEBHOOK_URL
-          value: "https://n8n.sidmakes.com"
-        - name: GENERIC_TIMEZONE
-          value: "UTC"
-        # Using filesystem for now (ephemeral)
-        - name: DB_TYPE
-          value: "sqlite"
-        - name: DB_SQLITE_DATABASE
-          value: "/home/node/.n8n/database.sqlite"
+          value: https://n8n.sidmakes.com
+        # Production-specific environment variables
+        - name: N8N_LOG_LEVEL
+          value: "info"
+        - name: N8N_METRICS
+          value: "true"
+        # Production resource limits
         resources:
           requests:
-            cpu: 100m
-            memory: 256Mi
-          limits:
-            cpu: 500m
+            cpu: 200m
             memory: 512Mi
+          limits:
+            cpu: 1000m
+            memory: 1Gi
+        # Health checks
         livenessProbe:
           httpGet:
             path: /healthz
             port: http
           initialDelaySeconds: 30
           periodSeconds: 10
+          timeoutSeconds: 5
+          failureThreshold: 3
         readinessProbe:
           httpGet:
             path: /healthz
             port: http
           initialDelaySeconds: 10
           periodSeconds: 5
-        volumeMounts:
-        - name: n8n-data
-          mountPath: /home/node/.n8n
-      volumes:
-      - name: n8n-data
-        emptyDir: {}
+          timeoutSeconds: 3
+          failureThreshold: 3
