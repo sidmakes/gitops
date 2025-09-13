@@ -1,0 +1,49 @@
+controller:
+  ingressClassResource:
+    default: true
+  ingressClass: nginx
+  
+  service:
+    type: NodePort
+    # Use specific NodePort values for consistent ALB target group registration
+    nodePorts:
+      http: 30080
+      https: 30443
+  
+  # Configure ALB-specific settings
+  config:
+    # ALB terminates SSL and forwards HTTP - trust forwarded headers
+    use-forwarded-headers: "true"
+    compute-full-forwarded-for: "true"
+    use-proxy-protocol: "false"
+    # Ensure proper handling of X-Forwarded-Proto
+    enable-real-ip: "true"
+  
+  # Enable metrics for health checks and monitoring
+  metrics:
+    enabled: true
+    serviceMonitor:
+      enabled: false  # Enable if using Prometheus operator
+  
+  # Health check configuration  
+  livenessProbe:
+    httpGet:
+      path: /healthz
+      port: 10254
+    initialDelaySeconds: 10
+    periodSeconds: 10
+  
+  readinessProbe:
+    httpGet:
+      path: /healthz
+      port: 10254
+    initialDelaySeconds: 10
+    periodSeconds: 1
+  
+  # Resource requests/limits for stability
+  resources:
+    requests:
+      cpu: 100m
+      memory: 90Mi
+    limits:
+      memory: 256Mi

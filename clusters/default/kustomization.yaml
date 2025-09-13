@@ -9,6 +9,7 @@ resources:
   - ../../infrastructure/namespaces
   
   # Applications
+  - ../../apps/ingress-nginx/overlays/production
   - ../../apps/n8n/overlays/production
 
 commonLabels:
