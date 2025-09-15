@@ -5,10 +5,6 @@ metadata:
   namespace: n8n
   labels:
     app.kubernetes.io/name: n8n
-    app.kubernetes.io/instance: n8n
-    app.kubernetes.io/component: service
-    app.kubernetes.io/managed-by: gitops
-    environment: production
 spec:
   type: ClusterIP
   ports:
@@ -18,4 +14,3 @@ spec:
     name: http
   selector:
     app.kubernetes.io/name: n8n
-    app.kubernetes.io/instance: n8n

@@ -1,16 +1,10 @@
-# This will be auto-discovered by ApplicationSet
-# Deploys Prometheus + Grafana monitoring stack via Helm
-apiVersion: kustomize.config.k8s.io/v1beta1
+apiVersion: kustomize.config.k8s.io/v1
 kind: Kustomization
-
-metadata:
-  name: kube-prometheus-stack
-  namespace: monitoring
 
 helmCharts:
 - name: kube-prometheus-stack
   repo: https://prometheus-community.github.io/helm-charts
-  version: 45.7.1
+  version: 66.2.2
   releaseName: kube-prometheus-stack
   namespace: monitoring
   includeCRDs: true
@@ -20,19 +14,16 @@ helmCharts:
         enabled: true
         ingressClassName: nginx
         annotations:
-          # SSL redirect handled by ALB
           nginx.ingress.kubernetes.io/ssl-redirect: "false"
         hosts:
           - grafana.sidmakes.com
       grafana.ini:
         server:
           root_url: https://grafana.sidmakes.com
-    
     prometheus:
       ingress:
         enabled: false
       prometheusSpec:
-        # Fix probe timeouts to handle WAL replay during startup
         livenessProbe:
           timeoutSeconds: 10
           periodSeconds: 10
@@ -45,8 +36,6 @@ helmCharts:
           timeoutSeconds: 10
           periodSeconds: 15
           failureThreshold: 60
-        
-        # Persistent storage for Prometheus TSDB
         storageSpec:
           volumeClaimTemplate:
             spec:
@@ -55,12 +44,9 @@ helmCharts:
               resources:
                 requests:
                   storage: 50Gi
-    
     alertmanager:
       ingress:
         enabled: false
-    
-    # Ensure node-exporter metrics include stable node labels
     prometheus-node-exporter:
       prometheus:
         monitor:
@@ -74,11 +60,9 @@ helmCharts:
               replacement: "$1"
               action: replace
 
+resources:
+- namespace.yaml
+
 commonLabels:
   app.kubernetes.io/name: prometheus
   app.kubernetes.io/managed-by: gitops
-  app.kubernetes.io/component: monitoring
-
-# Create namespace
-resources:
-- namespace.yaml

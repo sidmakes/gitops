@@ -5,4 +5,3 @@ metadata:
   labels:
     app.kubernetes.io/name: prometheus
     app.kubernetes.io/managed-by: gitops
-    app.kubernetes.io/component: monitoring
