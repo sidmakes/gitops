@@ -19,13 +19,13 @@ spec:
                   accessModes: ["ReadWriteOnce"]
                   resources:
                     requests:
-                      storage: 10Gi
+                      storage: 5Gi
             resources:
               requests:
-                cpu: 500m
-                memory: 2Gi
+                cpu: 200m
+                memory: 512Mi
               limits:
-                memory: 4Gi
+                memory: 1Gi
         
         alertmanager:
           enabled: false
@@ -46,10 +46,10 @@ spec:
             size: 5Gi
           resources:
             requests:
-              cpu: 100m
-              memory: 128Mi
+              cpu: 50m
+              memory: 64Mi
             limits:
-              memory: 256Mi
+              memory: 128Mi
         
         kubeStateMetrics:
           enabled: true
@@ -60,10 +60,10 @@ spec:
         prometheusOperator:
           resources:
             requests:
-              cpu: 100m
-              memory: 100Mi
+              cpu: 50m
+              memory: 64Mi
             limits:
-              memory: 200Mi
+              memory: 128Mi
   destination:
     server: https://kubernetes.default.svc
     namespace: prometheus
