@@ -25,6 +25,8 @@ spec:
             enable-real-ip: "true"
           metrics:
             enabled: true
+            serviceMonitor:
+              enabled: true
           resources:
             requests:
               cpu: 100m
