@@ -32,7 +32,7 @@ spec:
         
         grafana:
           enabled: true
-          adminPassword: "admin"
+          adminPassword: "prom-operator"
           defaultDashboardsEnabled: true
           sidecar:
             dashboards:
@@ -75,6 +75,20 @@ spec:
               memory: 64Mi
             limits:
               memory: 128Mi
+        
+        prometheus-node-exporter:
+          prometheus:
+            monitor:
+              enabled: true
+              jobLabel: jobLabel
+              relabelings:
+                - sourceLabels: ["__meta_kubernetes_pod_node_name"]
+                  separator: ";"
+                  regex: "^(.*)$"
+                  targetLabel: node
+                  replacement: "$1"
+                  action: replace
+
   destination:
     server: https://kubernetes.default.svc
     namespace: prometheus
