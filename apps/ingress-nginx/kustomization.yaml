@@ -23,9 +23,9 @@ helmCharts:
       service:
         type: NodePort
         # Use specific NodePort values for consistent ALB target group registration
+        # Only HTTP needed - ALB terminates SSL
         nodePorts:
           http: 30080
-          https: 30443
       
       # Configure ALB-specific settings
       config:
