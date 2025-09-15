@@ -28,19 +28,15 @@ spec:
         prometheus:
           ingress:
             enabled: false
+          serviceMonitor:
+            selfMonitor: true
           prometheusSpec:
-            livenessProbe:
-              timeoutSeconds: 10
-              periodSeconds: 10
-              failureThreshold: 6
-            readinessProbe:
-              timeoutSeconds: 10
-              periodSeconds: 5
-              failureThreshold: 3
-            startupProbe:
-              timeoutSeconds: 10
-              periodSeconds: 15
-              failureThreshold: 60
+            serviceMonitorSelector: {}
+            serviceMonitorNamespaceSelector: {}
+            podMonitorSelector: {}
+            podMonitorNamespaceSelector: {}
+            ruleSelector: {}
+            ruleNamespaceSelector: {}
             storageSpec:
               volumeClaimTemplate:
                 spec:
@@ -55,6 +51,13 @@ spec:
             enabled: false
         
         prometheus-node-exporter:
+          tolerations:
+            - key: node-role.kubernetes.io/control-plane
+              operator: Exists
+              effect: NoSchedule
+            - key: node-role.kubernetes.io/master
+              operator: Exists
+              effect: NoSchedule
           prometheus:
             monitor:
               enabled: true
@@ -66,6 +69,9 @@ spec:
                   targetLabel: node
                   replacement: "$1"
                   action: replace
+        
+        kube-state-metrics:
+          enabled: true
   destination:
     server: https://kubernetes.default.svc
     namespace: monitoring
