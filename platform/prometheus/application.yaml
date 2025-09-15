@@ -33,6 +33,17 @@ spec:
         grafana:
           enabled: true
           adminPassword: "admin"
+          defaultDashboardsEnabled: true
+          sidecar:
+            dashboards:
+              enabled: true
+              searchNamespace: ALL
+            datasources:
+              enabled: true
+          plugins:
+            - grafana-piechart-panel
+            - grafana-worldmap-panel
+            - grafana-clock-panel
           ingress:
             enabled: true
             ingressClassName: nginx
