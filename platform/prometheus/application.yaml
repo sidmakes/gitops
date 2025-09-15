@@ -9,7 +9,6 @@ spec:
     chart: kube-prometheus-stack
     targetRevision: 61.7.2
     helm:
-      skipCrds: false
       values: |
         grafana:
           ingress:
@@ -82,5 +81,3 @@ spec:
       selfHeal: true
     syncOptions:
       - CreateNamespace=true
-      - Replace=true
-      - ServerSideApply=true
