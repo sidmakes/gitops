@@ -5,3 +5,4 @@ resources:
   - ingress-nginx
   - prometheus
   - external-secrets
+  - external-secrets-config
