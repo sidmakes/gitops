@@ -15,8 +15,6 @@ spec:
       values: |
         installCRDs: true
         replicaCount: 1
-        scopedNamespace: external-secrets
-        scopedRBAC: true
         resources:
           requests:
             cpu: 50m
