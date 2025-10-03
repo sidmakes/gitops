@@ -35,6 +35,11 @@ spec:
           value: "info"
         - name: N8N_METRICS
           value: "true"
+        - name: N8N_ENCRYPTION_KEY
+          valueFrom:
+            secretKeyRef:
+              name: n8n-database
+              key: N8N_ENCRYPTION_KEY
         resources:
           requests:
             cpu: 200m
