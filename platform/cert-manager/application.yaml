@@ -1,26 +1,24 @@
 apiVersion: argoproj.io/v1alpha1
 kind: Application
 metadata:
-  name: db-operator-controller
+  name: cert-manager
   namespace: argocd
   annotations:
-    argocd.argoproj.io/sync-wave: "2"
+    argocd.argoproj.io/sync-wave: "1"
 spec:
   project: default
   source:
-    repoURL: https://db-operator.github.io/charts
-    chart: db-operator
-    targetRevision: 1.41.0
+    repoURL: https://charts.jetstack.io
+    chart: cert-manager
+    targetRevision: v1.14.5
     helm:
       values: |
-        watchNamespace: ""
-        serviceMonitor:
+        installCRDs: true
+        prometheus:
           enabled: false
-        secrets:
-          gsql: {}
   destination:
     server: https://kubernetes.default.svc
-    namespace: db-operator
+    namespace: cert-manager
   syncPolicy:
     automated:
       prune: true

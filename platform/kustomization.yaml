@@ -6,4 +6,5 @@ resources:
   - prometheus
   - external-secrets
   - external-secrets-config
+  - cert-manager
   - db-operator
