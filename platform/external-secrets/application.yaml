@@ -27,9 +27,22 @@ spec:
           - name: AWS_ROLE_ARN
             value: arn:aws:iam::520737738387:role/sidmakes-external-secrets-irsa
           - name: AWS_WEB_IDENTITY_TOKEN_FILE
-            value: /var/run/secrets/eks.amazonaws.com/serviceaccount/token
+            value: /var/run/secrets/aws-iam/token
           - name: AWS_STS_REGIONAL_ENDPOINTS
             value: regional
+        extraVolumeMounts:
+          - name: aws-iam-token
+            mountPath: /var/run/secrets/aws-iam
+            readOnly: true
+        extraVolumes:
+          - name: aws-iam-token
+            projected:
+              defaultMode: 420
+              sources:
+                - serviceAccountToken:
+                    audience: sts.amazonaws.com
+                    expirationSeconds: 3600
+                    path: token
         serviceAccount:
           annotations:
             eks.amazonaws.com/role-arn: arn:aws:iam::520737738387:role/sidmakes-external-secrets-irsa
