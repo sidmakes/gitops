@@ -6,3 +6,4 @@ resources:
   - prometheus
   - external-secrets
   - external-secrets-config
+  - db-operator

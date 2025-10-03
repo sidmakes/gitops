@@ -1,0 +1,7 @@
+apiVersion: v1
+kind: Namespace
+metadata:
+  name: db-operator
+  labels:
+    app.kubernetes.io/name: db-operator
+    app.kubernetes.io/managed-by: gitops
