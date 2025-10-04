@@ -4,5 +4,5 @@ kind: Kustomization
 resources:
   - application.yaml
   - manifests/cluster-secret-store.yaml
-  - manifests/n8n/externalsecret.yaml
+  - manifests/n8n/encryption-secret.yaml
   - manifests/db-operator/admin-secret.yaml

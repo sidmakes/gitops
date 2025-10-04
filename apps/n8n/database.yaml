@@ -1,0 +1,24 @@
+apiVersion: kci.rocks/v1beta1
+kind: Database
+metadata:
+  name: n8n
+  namespace: n8n
+spec:
+  instance: sm-postgres
+  deletionProtected: true
+  backup:
+    enable: false
+  secretName: n8n-database
+  secretsTemplates:
+    CONNECTION_STRING: "{{ .Protocol }}://{{ .UserName }}:{{ .Password }}@{{ .DatabaseHost }}:{{ .DatabasePort }}/{{ .DatabaseName }}"
+    DATABASE_HOST: "{{ .DatabaseHost }}"
+    DATABASE_NAME: "{{ .DatabaseName }}"
+    DATABASE_PASSWORD: "{{ .Password }}"
+    DATABASE_PORT: "{{ .DatabasePort }}"
+    DATABASE_USER: "{{ .UserName }}"
+    DB_POSTGRESDB_DATABASE: "{{ .DatabaseName }}"
+    DB_POSTGRESDB_HOST: "{{ .DatabaseHost }}"
+    DB_POSTGRESDB_PASSWORD: "{{ .Password }}"
+    DB_POSTGRESDB_PORT: "{{ .DatabasePort }}"
+    DB_POSTGRESDB_USER: "{{ .UserName }}"
+    DB_TYPE: "postgresdb"

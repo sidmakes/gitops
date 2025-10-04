@@ -1,0 +1,12 @@
+apiVersion: kci.rocks/v1beta1
+kind: DbInstance
+metadata:
+  name: sm-postgres
+spec:
+  engine: postgres
+  generic:
+    host: sm-postgres.cvkmuxluhrpb.us-east-2.rds.amazonaws.com
+    port: 5432
+  adminSecretRef:
+    name: db-operator-admin
+    namespace: db-operator
