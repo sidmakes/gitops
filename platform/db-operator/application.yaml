@@ -10,7 +10,7 @@ spec:
   source:
     repoURL: https://db-operator.github.io/charts
     chart: db-operator
-    targetRevision: db-operator-1.41.0
+    targetRevision: "1.41.0"
     helm:
       values: |
         watchNamespace: ""
