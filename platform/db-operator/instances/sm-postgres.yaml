@@ -10,3 +10,6 @@ spec:
   adminSecretRef:
     Name: db-operator-admin
     Namespace: db-operator
+  sslConnection:
+    enabled: true
+    skip-verify: true
