@@ -8,5 +8,5 @@ spec:
     host: sm-postgres.cvkmuxluhrpb.us-east-2.rds.amazonaws.com
     port: 5432
   adminSecretRef:
-    name: db-operator-admin
-    namespace: db-operator
+    Name: db-operator-admin
+    Namespace: db-operator
