@@ -22,4 +22,6 @@ spec:
     DB_POSTGRESDB_PORT: "{{ .DatabasePort }}"
     DB_POSTGRESDB_USER: "{{ .UserName }}"
     DB_POSTGRESDB_SSLMODE: "no-verify"
+    DB_POSTGRESDB_SSL: "true"
+    DB_POSTGRESDB_SSL_REJECT_UNAUTHORIZED: "false"
     DB_TYPE: "postgresdb"

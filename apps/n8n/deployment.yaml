@@ -70,6 +70,16 @@ spec:
             secretKeyRef:
               name: n8n-database
               key: DB_POSTGRESDB_SSLMODE
+        - name: DB_POSTGRESDB_SSL
+          valueFrom:
+            secretKeyRef:
+              name: n8n-database
+              key: DB_POSTGRESDB_SSL
+        - name: DB_POSTGRESDB_SSL_REJECT_UNAUTHORIZED
+          valueFrom:
+            secretKeyRef:
+              name: n8n-database
+              key: DB_POSTGRESDB_SSL_REJECT_UNAUTHORIZED
         - name: N8N_ENCRYPTION_KEY
           valueFrom:
             secretKeyRef:
