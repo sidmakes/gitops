@@ -8,9 +8,9 @@ metadata:
 spec:
   project: default
   source:
-    repoURL: https://github.com/db-operator/charts
-    targetRevision: v1.41.0
-    path: charts/db-operator
+    repoURL: https://db-operator.github.io/charts
+    chart: db-operator
+    targetRevision: db-operator-1.41.0
     helm:
       values: |
         watchNamespace: ""
