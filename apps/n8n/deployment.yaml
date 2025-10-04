@@ -35,6 +35,26 @@ spec:
           value: "info"
         - name: N8N_METRICS
           value: "true"
+        - name: DB_TYPE
+          valueFrom:
+            secretKeyRef:
+              name: n8n-database
+              key: DB_TYPE
+        - name: DB_POSTGRESDB_HOST
+          valueFrom:
+            secretKeyRef:
+              name: n8n-database
+              key: DB_POSTGRESDB_HOST
+        - name: DB_POSTGRESDB_PORT
+          valueFrom:
+            secretKeyRef:
+              name: n8n-database
+              key: DB_POSTGRESDB_PORT
+        - name: DB_POSTGRESDB_DATABASE
+          valueFrom:
+            secretKeyRef:
+              name: n8n-database
+              key: DB_POSTGRESDB_DATABASE
         - name: DB_POSTGRESDB_USER
           valueFrom:
             secretKeyRef:
