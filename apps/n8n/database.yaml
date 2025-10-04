@@ -10,7 +10,7 @@ spec:
     enable: false
   secretName: n8n-database
   secretsTemplates:
-    CONNECTION_STRING: "{{ .Protocol }}://{{ .UserName }}:{{ .Password }}@{{ .DatabaseHost }}:{{ .DatabasePort }}/{{ .DatabaseName }}"
+    CONNECTION_STRING: "{{ .Protocol }}://{{ .UserName }}:{{ .Password }}@{{ .DatabaseHost }}:{{ .DatabasePort }}/{{ .DatabaseName }}?sslmode=no-verify"
     DATABASE_HOST: "{{ .DatabaseHost }}"
     DATABASE_NAME: "{{ .DatabaseName }}"
     DATABASE_PASSWORD: "{{ .Password }}"
@@ -21,4 +21,5 @@ spec:
     DB_POSTGRESDB_PASSWORD: "{{ .Password }}"
     DB_POSTGRESDB_PORT: "{{ .DatabasePort }}"
     DB_POSTGRESDB_USER: "{{ .UserName }}"
+    DB_POSTGRESDB_SSLMODE: "no-verify"
     DB_TYPE: "postgresdb"
