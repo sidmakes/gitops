@@ -35,6 +35,16 @@ spec:
           value: "info"
         - name: N8N_METRICS
           value: "true"
+        - name: N8N_AVAILABLE_BINARY_DATA_MODES
+          value: database
+        - name: N8N_DEFAULT_BINARY_DATA_MODE
+          value: database
+        - name: N8N_BINARY_DATA_MODE
+          value: database
+        - name: N8N_BINARY_DATA_TTL
+          value: "2592000"
+        - name: N8N_PERSISTED_BINARY_DATA_TTL
+          value: "2592000"
         - name: DB_TYPE
           valueFrom:
             secretKeyRef:
