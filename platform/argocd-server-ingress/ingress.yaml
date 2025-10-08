@@ -1,13 +1,11 @@
 apiVersion: networking.k8s.io/v1
 kind: Ingress
 metadata:
-  name: n8n
-  namespace: n8n
-  labels:
-    app.kubernetes.io/name: n8n
+  name: argocd-server
+  namespace: argocd
   annotations:
     alb.ingress.kubernetes.io/group.name: shared
-    alb.ingress.kubernetes.io/group.order: "20"
+    alb.ingress.kubernetes.io/group.order: "10"
     alb.ingress.kubernetes.io/load-balancer-name: space-shared-alb
     alb.ingress.kubernetes.io/scheme: internet-facing
     alb.ingress.kubernetes.io/target-type: ip
@@ -15,13 +13,13 @@ metadata:
 spec:
   ingressClassName: alb
   rules:
-  - host: n8n.sidmakes.com
-    http:
-      paths:
-      - path: /
-        pathType: Prefix
-        backend:
-          service:
-            name: n8n
-            port:
-              number: 80
+    - host: argo.sidmakes.com
+      http:
+        paths:
+          - path: /
+            pathType: Prefix
+            backend:
+              service:
+                name: argocd-server
+                port:
+                  number: 80
