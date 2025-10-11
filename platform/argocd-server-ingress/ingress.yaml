@@ -4,14 +4,11 @@ metadata:
   name: argocd-server
   namespace: argocd
   annotations:
-    alb.ingress.kubernetes.io/group.name: shared
-    alb.ingress.kubernetes.io/group.order: "10"
-    alb.ingress.kubernetes.io/load-balancer-name: space-shared-alb
-    alb.ingress.kubernetes.io/scheme: internet-facing
-    alb.ingress.kubernetes.io/target-type: ip
-    alb.ingress.kubernetes.io/certificate-arn: arn:aws:acm:us-east-2:123456789012:certificate/placeholder
+    nginx.ingress.kubernetes.io/backend-protocol: "HTTP"
+    nginx.ingress.kubernetes.io/force-ssl-redirect: "true"
+    nginx.ingress.kubernetes.io/proxy-body-size: "0"
 spec:
-  ingressClassName: alb
+  ingressClassName: nginx
   rules:
     - host: argo.sidmakes.com
       http:

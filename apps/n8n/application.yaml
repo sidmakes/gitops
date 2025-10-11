@@ -5,7 +5,7 @@ metadata:
   namespace: argocd
   annotations:
     argocd.argoproj.io/sync-wave: "4"
-    argocd.argoproj.io/sync-options: DependsOn=db-operator-instances,DependsOn=ingress-nginx,DependsOn=argocd-server-ingress
+    argocd.argoproj.io/sync-options: DependsOn=ingress-nginx
 spec:
   project: default
   source:
@@ -22,6 +22,4 @@ spec:
     syncOptions:
       - CreateNamespace=true
       - PrunePropagationPolicy=foreground
-      - DependsOn=db-operator-instances
       - DependsOn=ingress-nginx
-      - DependsOn=argocd-server-ingress
